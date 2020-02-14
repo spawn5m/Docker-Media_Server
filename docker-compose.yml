@@ -1,26 +1,47 @@
 version: "2"
 services:
+
+################################################################################
+##                                  Deluge                                    ##
+################################################################################
+  deluge:
+    image: linuxserver/deluge
+    container_name: deluge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+      - DELUGE_LOGLEVEL=error
+    volumes:
+      - deluge_data:/config
+      - /media/spawn5m/Media/Download/:/downloads
+    ports:
+      - 8112:8112
+    restart: unless-stopped
+
 ################################################################################
 ##                                    Jackett                                 ##
 ################################################################################
-jackett:
-  image: linuxserver/jackett
-  container_name: jackett
-  environment:
-    - PUID=1000
-    - PGID=1000
-    - TZ=Europe/Rome
-    - UMASK_SET=022 #optional
-  volumes:
-    - jackett_data:/config
-    - jackett_data:/downloads
-  ports:
-    - 9117:9117
-  restart: unless-stopped
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+    volumes:
+      - jackett_data:/config
+      - jackett_data:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
 ################################################################################
 ##                                    Sonarr                                  ##
 ################################################################################
-sonarr:
+  sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
     environment:
@@ -34,4 +55,79 @@ sonarr:
       - /media/spawn5m/Media/Download/:/downloads
     ports:
       - 8989:8989
+    restart: unless-stopped
+
+################################################################################
+##                                 Radarr                                     ##
+################################################################################
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+    volumes:
+      - radarr_data:/config
+      - /media/spawn5m/Media/Plex/Movie/:/movies
+      - /media/spawn5m/Media/Download/:/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+################################################################################
+##                                    Bazarr                                 ##
+################################################################################
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+    volumes:
+      -  bazarr_data:/config
+      - /media/spawn5m/Media/Plex/Movie/:/movies
+      - /media/spawn5m/Media/Plex/Tv\ Show/:/tv
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+################################################################################
+##                                    PLEX                                    ##
+################################################################################
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+      - PLEX_CLAIM=claim-DQoyUjzQ6xKsN1HLx9qk
+    volumes:
+      - pms_data:/config
+      - pms_data:/transcode
+      - /media/spawn5m/Media/Plex/:/data
+    ports:
+      - 32400:32400
+    restart: unless-stopped
+
+################################################################################
+##                                 Netatalk                                   ##
+################################################################################
+  netatalk:
+    image: cptactionhank/netatalk:latest
+    container_name: netatalk
+    environment:
+      - AFP_USER=spawn5m
+      - AFP_PASSWORD=maggigul
+      - AFP_UID=1000
+      - AFP_GID=1000
+      - AVAHI=1
+    network_mode: host
+    volumes:
+      - /media/spawn5m/Media/:/media/share
     restart: unless-stopped
