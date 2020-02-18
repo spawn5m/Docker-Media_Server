@@ -109,7 +109,7 @@ services:
       - PLEX_CLAIM=claim-DQoyUjzQ6xKsN1HLx9qk
     volumes:
       - pms_data:/config
-      - pms_data:/transcode
+      - /home/spawn5m/DockerConfig/PMS_Data/:/transcode
       - /media/spawn5m/Media/Plex/:/data
     ports:
       - 32400:32400

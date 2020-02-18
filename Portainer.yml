@@ -1,0 +1,22 @@
+version: "2"
+services:
+
+################################################################################
+##                                  Compose                                   ##
+################################################################################
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - 8000:8000
+      - 9000:9000
+    restart: always
+
+
+################################################################################
+##                                  RUN                                       ##
+################################################################################
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
