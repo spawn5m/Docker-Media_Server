@@ -51,7 +51,7 @@ services:
       - UMASK_SET=022 #optional
     volumes:
       - sonarr_data:/config
-      - /media/spawn5m/Media/Plex/Tv\ Show/:/tv
+      - /media/spawn5m/Media/Plex/TvShow/:/tv
       - /media/spawn5m/Media/Download/:/downloads
     ports:
       - 8989:8989
@@ -90,7 +90,7 @@ services:
     volumes:
       -  bazarr_data:/config
       - /media/spawn5m/Media/Plex/Movie/:/movies
-      - /media/spawn5m/Media/Plex/Tv\ Show/:/tv
+      - /media/spawn5m/Media/Plex/TvShow/:/tv
     ports:
       - 6767:6767
     restart: unless-stopped
@@ -127,7 +127,8 @@ services:
       - AFP_UID=1000
       - AFP_GID=1000
       - AVAHI=1
-    network_mode: host
+    ports:
+      - 548:548
     volumes:
-      - /media/spawn5m/Media/:/media/share
+      - /media/spawn5m/:/media/share
     restart: unless-stopped
