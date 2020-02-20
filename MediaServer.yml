@@ -118,6 +118,7 @@ services:
 ################################################################################
 ##                                 Netatalk                                   ##
 ################################################################################
+
   netatalk:
     image: cptactionhank/netatalk:latest
     container_name: netatalk
@@ -127,8 +128,31 @@ services:
       - AFP_UID=1000
       - AFP_GID=1000
       - AVAHI=1
-    ports:
-      - 548:548
+    network_mode: host
     volumes:
-      - /media/spawn5m/:/media/share
+      - /home/spawn5m/DockerConfig/Netatalk_Data/etc/afp.conf:/etc/afp.conf
+      - /media/spawn5m/Media/:/media/share
+      - /media/spawn5m/Backup/TimeMachine/:/media/timemachine
+    restart: unless-stopped
+
+
+################################################################################
+##                                 Calibre                                    ##
+################################################################################
+  calibre:
+    image: linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - GUAC_USER=spawn5m #optional
+      - GUAC_PASS=8dd893f052dc4918275b955a65285750 #optional
+    volumes:
+      - calibre_data:/config
+      - /media/spawn5m/Media/Books/Book/:/books
+      - /media/spawn5m/Media/Books/CalibreStore:/CalibreStore
+    ports:
+      - 8080:8080
+      - 8081:8081
     restart: unless-stopped

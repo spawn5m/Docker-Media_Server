@@ -1,0 +1,6 @@
+#################################################################################################
+##                                 Home assistant                                              ##
+## https://www.smarthomebeginner.com/install-hass-io-on-docker-linux/#Install_HASSio_on_Docker ##
+#################################################################################################
+sudo su -
+curl -sL https://raw.githubusercontent.com/home-assistant/hassio-installer/master/hassio_install.sh | bash -s -- -m intel-nuc -d /home/spawn5m/DockerConfig/ha_data/
