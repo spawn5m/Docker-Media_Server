@@ -150,9 +150,46 @@ services:
       - GUAC_PASS=8dd893f052dc4918275b955a65285750 #optional
     volumes:
       - calibre_data:/config
-      - /media/spawn5m/Media/Books/Book/:/books
-      - /media/spawn5m/Media/Books/CalibreStore:/CalibreStore
+      - /media/spawn5m/Media/Books/Calibre/Book/:/books
+      - /media/spawn5m/Media/Books/Calibre/Pass/:/CalibreStore
     ports:
       - 8080:8080
       - 8081:8081
+    restart: unless-stopped
+
+
+################################################################################
+##                             lazylibrarian                                  ##
+################################################################################
+  lazylibrarian:
+    image: linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      #- DOCKER_MODS=linuxserver/calibre-web:calibre #optional
+    volumes:
+      - lazylibrarian_data:/config
+      - /media/spawn5m/Media/Books/LazyLibrarian/Download/:/downloads
+      - /media/spawn5m/Media/Books/LazyLibrarian/Book/:/books
+    ports:
+      - 5299:5299
+    restart: unless-stopped
+
+################################################################################
+##                                 Heimdall                                   ##
+################################################################################
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+    volumes:
+      - heimdall_data:/config
+    ports:
+      - 80:80
+      - 443:443
     restart: unless-stopped
