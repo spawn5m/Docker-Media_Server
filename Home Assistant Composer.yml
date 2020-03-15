@@ -1,0 +1,13 @@
+version: "2"
+services:
+  homeassistant:
+    image: homeassistant/home-assistant:stable #cambio del container
+    container_name: homeassistant
+    environment:
+      - TZ=Europe/Rome
+    network_mode: host
+    volumes:
+      - /home/spawn5m/DockerConfig/ha_data/homeassistant:/config
+      - /home/spawn5m/DockerConfig/ha_data/share:/share
+      - /home/spawn5m/DockerConfig/ha_data/ssl:/ssl
+    restart: unless-stopped

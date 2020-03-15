@@ -1,5 +1,25 @@
 version: "2"
 services:
+################################################################################
+##                                    PLEX                                    ##
+################################################################################
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+      - PLEX_CLAIM=claim-8Y2w4rsS_fsuLCEsbGsx  #Ricordati di aggiornare con https://www.plex.tv/claim
+    volumes:
+      - pms_data:/config
+      - /home/spawn5m/DockerConfig/PMS_Data/:/transcode
+      - /media/spawn5m/Media/Plex/:/data
+    ports:
+      - 32400:32400
+    restart: unless-stopped
+
 
 ################################################################################
 ##                                  Deluge                                    ##
@@ -52,7 +72,7 @@ services:
       - TZ=Europe/Rome
       - UMASK_SET=022 #optional
     volumes:
-      - sonarr_data:/config
+      - /home/spawn5m/DockerConfig/Sonarr_Data/config/:/config
       - /media/spawn5m/Media/Plex/TvShow/:/tv
       - /media/spawn5m/Media/Download/:/downloads
     ports:
@@ -72,7 +92,7 @@ services:
       - TZ=Europe/Rome
       - UMASK_SET=022 #optional
     volumes:
-      - radarr_data:/config
+      - /home/spawn5m/DockerConfig/Radarr_Data/config/:/config
       - /media/spawn5m/Media/Plex/Movie/:/movies
       - /media/spawn5m/Media/Download/:/downloads
     ports:
@@ -92,32 +112,11 @@ services:
       - TZ=Europe/Rome
       - UMASK_SET=022 #optional
     volumes:
-      -  bazarr_data:/config
+      - bazarr_data:/config
       - /media/spawn5m/Media/Plex/Movie/:/movies
       - /media/spawn5m/Media/Plex/TvShow/:/tv
     ports:
       - 6767:6767
-    restart: unless-stopped
-
-
-################################################################################
-##                                    PLEX                                    ##
-################################################################################
-  plex:
-    image: plexinc/pms-docker
-    container_name: plex
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Rome
-      - UMASK_SET=022 #optional
-      - PLEX_CLAIM=claim-DQoyUjzQ6xKsN1HLx9qk
-    volumes:
-      - pms_data:/config
-      - /home/spawn5m/DockerConfig/PMS_Data/:/transcode
-      - /media/spawn5m/Media/Plex/:/data
-    ports:
-      - 32400:32400
     restart: unless-stopped
 
 
@@ -136,6 +135,7 @@ services:
     network_mode: host
     volumes:
       - /home/spawn5m/DockerConfig/Netatalk_Data/etc/afp.conf:/etc/afp.conf
+      - /home/spawn5m/DockerConfig/:/media/DockerConfig #Cartella Docker
       - /media/spawn5m/Media/:/media/share
       - /media/spawn5m/Backup/TimeMachine/:/media/timemachine
     restart: unless-stopped
@@ -207,7 +207,7 @@ services:
     container_name: syncthing
     network_mode: host
     volumes:
-          - /media/spawn5m/Media/Photo/:/var/syncthing
+      - /media/spawn5m/Media/Photo/:/var/syncthing
     ports:
       - 8384:8384
       - 22000:22000

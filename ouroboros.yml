@@ -1,0 +1,16 @@
+version: '2'
+services:
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    environment:
+      - CLEANUP=true
+      - INTERVAL=3600
+      - LOG_LEVEL=info
+      - SELF_UPDATE=true
+      - MONITOR=bazarr calibre deluge heimdall jackett lazylibrarian netatalk portainer radarr sonarr syncthing
+      - TZ=Europe/Rome
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
