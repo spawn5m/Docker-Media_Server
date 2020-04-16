@@ -1,0 +1,42 @@
+version: "2"
+services:
+################################################################################
+##                                 Calibre                                    ##
+################################################################################
+  calibre:
+    image: linuxserver/calibre
+    container_name: calibre
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - GUAC_USER=spawn5m #optional
+      - GUAC_PASS=8dd893f052dc4918275b955a65285750 #optional
+    volumes:
+      - calibre_data:/config
+      - /media/spawn5m/Media/Books/Calibre/Book/:/books
+      - /media/spawn5m/Media/Books/Calibre/Pass/:/CalibreStore
+    ports:
+      - 8080:8080
+      - 8081:8081
+    restart: unless-stopped
+
+
+################################################################################
+##                             lazylibrarian                                  ##
+################################################################################
+  lazylibrarian:
+    image: linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      #- DOCKER_MODS=linuxserver/calibre-web:calibre #optional
+    volumes:
+      - lazylibrarian_data:/config
+      - /media/spawn5m/Media/Books/LazyLibrarian/Download/:/downloads
+      - /media/spawn5m/Media/Books/LazyLibrarian/Book/:/books
+    ports:
+      - 5299:5299
+    restart: unless-stopped

@@ -1,0 +1,19 @@
+version: "2"
+services:
+
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Rome
+      - UMASK_SET=022 #optional
+      - PLEX_CLAIM=claim-wNBG5z77MQAAAddiJWDn #Ricordati di aggiornare con https://www.plex.tv/claim
+    volumes:
+      - /home/spawn5m/DockerConfig/PMS_Data/:/config
+      - /home/spawn5m/DockerConfig/PMS_Data/:/transcode
+      - /media/spawn5m/Media/Plex/:/data
+    ports:
+      - 32400:32400
+    restart: unless-stopped

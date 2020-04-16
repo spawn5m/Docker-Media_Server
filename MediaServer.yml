@@ -1,27 +1,6 @@
 version: "2"
 services:
 ################################################################################
-##                                    PLEX                                    ##
-################################################################################
-  plex:
-    image: plexinc/pms-docker
-    container_name: plex
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Rome
-      - UMASK_SET=022 #optional
-      - PLEX_CLAIM=claim-8Y2w4rsS_fsuLCEsbGsx  #Ricordati di aggiornare con https://www.plex.tv/claim
-    volumes:
-      - pms_data:/config
-      - /home/spawn5m/DockerConfig/PMS_Data/:/transcode
-      - /media/spawn5m/Media/Plex/:/data
-    ports:
-      - 32400:32400
-    restart: unless-stopped
-
-
-################################################################################
 ##                                  Deluge                                    ##
 ################################################################################
   deluge:
@@ -112,7 +91,7 @@ services:
       - TZ=Europe/Rome
       - UMASK_SET=022 #optional
     volumes:
-      - bazarr_data:/config
+      - /home/spawn5m/DockerConfig/Bazarr_Data:/config
       - /media/spawn5m/Media/Plex/Movie/:/movies
       - /media/spawn5m/Media/Plex/TvShow/:/tv
     ports:
@@ -138,48 +117,6 @@ services:
       - /home/spawn5m/DockerConfig/:/media/DockerConfig #Cartella Docker
       - /media/spawn5m/Media/:/media/share
       - /media/spawn5m/Backup/TimeMachine/:/media/timemachine
-    restart: unless-stopped
-
-
-################################################################################
-##                                 Calibre                                    ##
-################################################################################
-  calibre:
-    image: linuxserver/calibre
-    container_name: calibre
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Rome
-      - GUAC_USER=spawn5m #optional
-      - GUAC_PASS=8dd893f052dc4918275b955a65285750 #optional
-    volumes:
-      - calibre_data:/config
-      - /media/spawn5m/Media/Books/Calibre/Book/:/books
-      - /media/spawn5m/Media/Books/Calibre/Pass/:/CalibreStore
-    ports:
-      - 8080:8080
-      - 8081:8081
-    restart: unless-stopped
-
-
-################################################################################
-##                             lazylibrarian                                  ##
-################################################################################
-  lazylibrarian:
-    image: linuxserver/lazylibrarian
-    container_name: lazylibrarian
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Rome
-      #- DOCKER_MODS=linuxserver/calibre-web:calibre #optional
-    volumes:
-      - lazylibrarian_data:/config
-      - /media/spawn5m/Media/Books/LazyLibrarian/Download/:/downloads
-      - /media/spawn5m/Media/Books/LazyLibrarian/Book/:/books
-    ports:
-      - 5299:5299
     restart: unless-stopped
 
 ################################################################################
